@@ -92,7 +92,9 @@
   
   <div id="quiz-container">
     <h2 id="quiz-title"></h2>
-    <p id="question"></p>
+    <p id="questionCounter"></p> <!-- Zeigt 'Frage X von Y' an -->
+<p id="question"></p>
+
     <!-- Anzeige der möglichen Punkte pro Frage (z. B. Anzahl korrekter Antworten) -->
     <p id="possiblePoints"></p>
     <div id="options" class="options"></div>
@@ -123,7 +125,7 @@
             let questions = quizData[category];
 
             // Falls eine Kategorie weniger als 3 Fragen hat, alle nehmen
-            let chosenQuestions = shuffleArray(questions).slice(0, 3);
+            let chosenQuestions = shuffleArray(questions).slice(0, 4);
             selectedQuestions = selectedQuestions.concat(chosenQuestions);
         }
 
@@ -148,41 +150,41 @@ function shuffleArray(array) {
 }
 
   
-    function loadQuestion() {
-      if (currentQuestionIndex >= currentQuiz.length) {
-        // Errechne die Gesamtzahl möglicher Punkte
-        // Bei diesem Scoring: Jeder ausgewählte falsche Wert wird negativ gewertet,
-        // daher zeigen wir hier nur den Endscore an.
+function loadQuestion() {
+    if (currentQuestionIndex >= currentQuiz.length) {
         document.getElementById("quiz-container").innerHTML = `
-          <h2>Quiz beendet!</h2>
-          <p>Gesamtscore: ${totalScore}</p>
-          <button class="button" onclick="resetQuiz()">Reset</button>
+            <h2>Quiz beendet!</h2>
+            <p>Gesamtscore: ${totalScore}</p>
+            <button class="button" onclick="resetQuiz()">Reset</button>
         `;
         return;
-      }
-      
-      const q = currentQuiz[currentQuestionIndex];
-      document.getElementById("question").textContent = q.question;
-      
-      // Ermitteln der möglichen Punkte pro Frage:
-      // Hier wird als mögliche Punkteanzahl die Anzahl der korrekten Antworten genommen.
-      const possiblePoints = q.answer.length;
-      document.getElementById("possiblePoints").textContent = "Mögliche Punkte: " + possiblePoints;
-  
-      const optionsDiv = document.getElementById("options");
-      optionsDiv.innerHTML = "";
-      document.getElementById("next").style.display = "none";
-  
-      // Optionen kopieren und mischen
-      let options = q.options.slice();
-      options = shuffleArray(options);
-      options.forEach(option => {
+    }
+
+    const q = currentQuiz[currentQuestionIndex];
+
+    // ✨ NEU: Frage-Nummerierung anzeigen
+    document.getElementById("questionCounter").textContent = 
+        `Frage ${currentQuestionIndex + 1} von ${currentQuiz.length}`;
+
+    document.getElementById("question").textContent = q.question;
+
+    const possiblePoints = q.answer.length;
+    document.getElementById("possiblePoints").textContent = "Mögliche Punkte: " + possiblePoints;
+
+    const optionsDiv = document.getElementById("options");
+    optionsDiv.innerHTML = "";
+    document.getElementById("next").style.display = "none";
+
+    let options = shuffleArray(q.options.slice());
+    options.forEach(option => {
         const label = document.createElement("label");
         label.innerHTML = `<input type="checkbox" name="option" value="${option}"> ${option}`;
         optionsDiv.appendChild(label);
-      });
-      document.getElementById("next").style.display = "block";
-    }
+    });
+
+    document.getElementById("next").style.display = "block";
+}
+
   
     function nextQuestion() {
       const selectedOptions = Array.from(document.querySelectorAll("input[name='option']:checked"))
