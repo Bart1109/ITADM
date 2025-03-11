@@ -110,27 +110,43 @@
     let totalScore = 0;
   
     function startQuiz(mode) {
-      // Quiz-Auswahl ausblenden
-      document.querySelector('.container').style.display = 'none';
-      document.getElementById("quiz-container").style.display = "block";
-      document.getElementById("quiz-title").textContent = mode.toUpperCase();
-  
-      if (mode === "random") {
-        // Alle Fragen aus allen Kategorien kombinieren, mischen und 20 Zufallsfragen auswählen
-        let allQuestions = [];
-        for (let key in quizData) {
-          allQuestions = allQuestions.concat(quizData[key]);
+    // Quiz-Auswahl ausblenden
+    document.querySelector('.container').style.display = 'none';
+    document.getElementById("quiz-container").style.display = "block";
+    document.getElementById("quiz-title").textContent = mode.toUpperCase();
+
+    if (mode === "random") {
+        // Leeres Array für die zufällige Auswahl aus allen Kategorien
+        let selectedQuestions = [];
+
+        for (let category in quizData) {
+            let questions = quizData[category];
+
+            // Falls eine Kategorie weniger als 3 Fragen hat, alle nehmen
+            let chosenQuestions = shuffleArray(questions).slice(0, 3);
+            selectedQuestions = selectedQuestions.concat(chosenQuestions);
         }
-        currentQuiz = shuffleArray(allQuestions).slice(0, 20);
-      } else {
-        // Für andere Modi werden alle Fragen des jeweiligen Themas gemischt
+
+        currentQuiz = shuffleArray(selectedQuestions); // Gesamtauswahl mischen
+    } else {
+        // Standardmodus: Fragen aus der gewählten Kategorie mischen
         currentQuiz = shuffleArray(quizData[mode].slice());
-      }
-      
-      currentQuestionIndex = 0;
-      totalScore = 0;
-      loadQuestion();
     }
+
+    currentQuestionIndex = 0;
+    totalScore = 0;
+    loadQuestion();
+}
+
+// Hilfsfunktion zum Mischen eines Arrays (Fisher-Yates Algorithmus)
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]]; // Swap
+    }
+    return array;
+}
+
   
     function loadQuestion() {
       if (currentQuestionIndex >= currentQuiz.length) {
