@@ -5,6 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quiz Themenauswahl</title>
   <style>
+    h1 {
+    width: 100%; /* Macht die Überschrift so breit wie möglich */
+    text-align: center; /* Zentriert den Text */
+    font-size: 2.5em; /* Größerer Schriftgrad für bessere Lesbarkeit */
+    color: #007BFF; /* Helles Blau */
+    padding: 20px 0; /* Etwas Abstand oben und unten */
+    background-color: rgba(255, 255, 255, 0.1); /* Leichte Transparenz für Kontrast */
+    border-radius: 10px; /* Abgerundete Ecken */
+}
+
     body {
       font-family: Arial, sans-serif;
       text-align: center;
@@ -112,10 +122,12 @@
     let totalScore = 0;
   
     function startQuiz(mode) {
+      // Versteckt die Überschrift
+    document.querySelector('h1').textContent = `${mode.toUpperCase()}`;
     // Quiz-Auswahl ausblenden
     document.querySelector('.container').style.display = 'none';
     document.getElementById("quiz-container").style.display = "block";
-    document.getElementById("quiz-title").textContent = mode.toUpperCase();
+    
 
     if (mode === "zufallsquiz") {
         // Leeres Array für die zufällige Auswahl aus allen Kategorien
@@ -212,7 +224,7 @@ function loadQuestion() {
       setTimeout(() => {
         currentQuestionIndex++;
         loadQuestion();
-      }, 1500);
+      }, 500);
     }
   
     // Funktion zum Zurücksetzen und Anzeigen der Quiz-Auswahl
