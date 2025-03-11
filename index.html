@@ -87,7 +87,7 @@
     <button class="button" onclick="startQuiz('datensicherheit')">Datensicherheit</button>
     <button class="button" onclick="startQuiz('systemanalyse')">Systemanalyse und Management</button>
     <button class="button" onclick="startQuiz('Linux')">Linux</button>
-    <button class="button" onclick="startQuiz('random')">Zufallsquiz</button>
+    <button class="button" onclick="startQuiz('zufallsquiz')">Zufallsquiz</button>
   </div>
   
   <div id="quiz-container">
@@ -117,7 +117,7 @@
     document.getElementById("quiz-container").style.display = "block";
     document.getElementById("quiz-title").textContent = mode.toUpperCase();
 
-    if (mode === "random") {
+    if (mode === "zufallsquiz") {
         // Leeres Array für die zufällige Auswahl aus allen Kategorien
         let selectedQuestions = [];
 
