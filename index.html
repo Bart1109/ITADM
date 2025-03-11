@@ -198,34 +198,52 @@ function loadQuestion() {
 }
 
   
-    function nextQuestion() {
-      const selectedOptions = Array.from(document.querySelectorAll("input[name='option']:checked"))
-                                 .map(input => input.value);
-      const correctAnswers = currentQuiz[currentQuestionIndex].answer;
-      let correctCount = 0;
-      let wrongCount = 0;
-      
-      document.querySelectorAll(".options label").forEach(label => {
+function nextQuestion() {
+    const selectedOptions = Array.from(document.querySelectorAll("input[name='option']:checked"))
+                                .map(input => input.value);
+    const correctAnswers = currentQuiz[currentQuestionIndex].answer;
+    let correctCount = 0;
+    let wrongCount = 0;
+
+    document.querySelectorAll(".options label").forEach(label => {
         const option = label.textContent.trim();
-        if (selectedOptions.includes(option)) {
-          if (correctAnswers.includes(option)) {
-            label.classList.add("correct");
-            correctCount++;
-          } else {
-            label.classList.add("incorrect");
-            wrongCount++;
-          }
+        const input = label.querySelector("input");
+
+        if (correctAnswers.includes(option)) {
+            label.classList.add("correct"); // Richtige Antwort markieren
         }
-      });
-  
-      // Für jede korrekte Auswahl gibt es +1, für jede falsche -1
-      totalScore += (correctCount - wrongCount);
-  
-      setTimeout(() => {
-        currentQuestionIndex++;
-        loadQuestion();
-      }, 500);
-    }
+        if (selectedOptions.includes(option)) {
+            if (correctAnswers.includes(option)) {
+                correctCount++;
+            } else {
+                label.classList.add("incorrect"); // Falsche Auswahl markieren
+                wrongCount++;
+            }
+        }
+
+        // Checkbox deaktivieren, damit Nutzer nicht ändern kann
+        input.disabled = true;
+    });
+
+    // Punkte berechnen
+    totalScore += Math.max(0, correctCount - wrongCount); // Keine Minuspunkte
+
+    // "Next"-Button nach Bewertung anzeigen
+    document.getElementById("next").style.display = "block";
+
+    // Automatisch nach 3 Sekunden zur nächsten Frage wechseln
+    setTimeout(() => {
+        proceedToNext();
+    }, 3000);
+}
+
+// Funktion, um zur nächsten Frage zu wechseln
+function proceedToNext() {
+    currentQuestionIndex++;
+    loadQuestion();
+}
+
+     
   
     // Funktion zum Zurücksetzen und Anzeigen der Quiz-Auswahl
     function resetQuiz() {
