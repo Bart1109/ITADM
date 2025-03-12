@@ -69,7 +69,7 @@ const quizData = {
             {
                 question: "Mit welcher HTML-Anweisung kann ich Javascript-Code in HTML einbetten?",
                 options: ["&lt;title&gt;", "&lt;function&gt;", "&lt;script&gt;", "&lt;head&gt;"],
-                answer: ["&lt;script&gt;"],
+                answer: ["<script>"],
                 
             }
         ],
