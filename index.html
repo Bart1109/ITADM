@@ -207,13 +207,14 @@ function nextQuestion() {
 
     document.querySelectorAll(".options label").forEach(label => {
         const option = label.textContent.trim();
+        const decodedOption = decodeHTMLEntities(option); // HTML-Entities umwandeln
         const input = label.querySelector("input");
 
-        if (correctAnswers.includes(option)) {
+        if (correctAnswers.some(ans => decodeHTMLEntities(ans) === decodedOption)) {
             label.classList.add("correct"); // Richtige Antwort markieren
         }
         if (selectedOptions.includes(option)) {
-            if (correctAnswers.includes(option)) {
+            if (correctAnswers.some(ans => decodeHTMLEntities(ans) === decodedOption)) {
                 correctCount++;
             } else {
                 label.classList.add("incorrect"); // Falsche Auswahl markieren
@@ -237,11 +238,13 @@ function nextQuestion() {
     }, 3000);
 }
 
-// Funktion, um zur nächsten Frage zu wechseln
-function proceedToNext() {
-    currentQuestionIndex++;
-    loadQuestion();
+// Hilfsfunktion zum Dekodieren von HTML-Entities
+function decodeHTMLEntities(text) {
+    const textarea = document.createElement("textarea");
+    textarea.innerHTML = text;
+    return textarea.value;
 }
+
 
      
   
