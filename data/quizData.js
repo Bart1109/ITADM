@@ -57,7 +57,7 @@ const quizData = {
             {
                 question: "Was gibt die Schleife aus: for(i=1;i<=10;i++) { if ((i<5) && (i>2)) console.log(i+2); }",
                 options: ["3,4", "4,5", "5,6", "Keine Ausgabe"],
-                answer: ["4,5"],
+                answer: ["5,6"],
                 
             },
             {
